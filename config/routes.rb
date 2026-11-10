@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root "homes#top"
   get "about", to: "homes#about"
 
-  resources :users, only: [ :new, :create, :show ]
+  resources :users, only: [ :new, :create, :show, :edit, :update, :destroy ]
   resource :sessions, only: [ :new, :create, :destroy ]
 
   resources :posts do

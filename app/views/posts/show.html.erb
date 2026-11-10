@@ -107,8 +107,8 @@
                     <strong>
                       <i class="fa-solid fa-user"></i>
                       <%= link_to comment.user.name,
-                        user_path(comment.user),
-                        class: "text-decoration-none" %>
+                          user_path(comment.user),
+                          class: "text-decoration-none" %>
                     </strong>
 
                     <p class="text-muted small mb-2">
@@ -118,12 +118,14 @@
 
                   <% if current_user == comment.user %>
                     <%= button_to "Delete",
-                      post_comment_path(@post, comment),
-                      method: :delete,
-                      data: {
-                      turbo_confirm: "Are you sure you want to delete this comment?"
-                      },
-                      class: "btn btn-sm btn-outline-danger" %>
+                        post_comment_path(@post, comment),
+                        method: :delete,
+                        class: "btn btn-sm btn-outline-danger",
+                        form: {
+                          data: {
+                            turbo_confirm: "Are you sure you want to delete this comment?"
+                          }
+                        } %>
                   <% end %>
                 </div>
 
@@ -149,10 +151,12 @@
           <%= button_to "Delete Post",
               post_path(@post),
               method: :delete,
-              data: {
-                turbo_confirm: "Are you sure you want to delete this post?"
-              },
-              class: "btn btn-danger" %>
+              class: "btn btn-danger",
+              form: {
+                data: {
+                  turbo_confirm: "Are you sure you want to delete this post?"
+                }
+              } %>
         </div>
       <% end %>
 
