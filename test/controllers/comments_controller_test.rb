@@ -132,11 +132,10 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_difference("Comment.count") do
       post post_comments_url(post_record), params: {
-        comment: {body: "Beautiful place!"}
+        comment: { body: "Beautiful place!" }
       }
     end
 
     assert_redirected_to new_sessions_path
   end
-
 end

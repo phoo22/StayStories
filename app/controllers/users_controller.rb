@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_login, only: [:edit, :update, :destroy]
-  before_action :set_current_user, only: [:edit, :update, :destroy]
+  before_action :require_login, only: [ :edit, :update, :destroy ]
+  before_action :set_current_user, only: [ :edit, :update, :destroy ]
 
   def new
     @user = User.new
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
 
   def edit
   end
-  
+
   def update
     attributes = user_params
 
