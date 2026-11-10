@@ -1,0 +1,45 @@
+
+<div class="container mt-4">
+  <h1>Edit Post</h1>
+  <p>Update your travel experience!</p>
+
+  <%= form_with model: @post, local: true do |f| %>
+
+    <div class="mb-3">
+      <%= f.label :title, class: "form-label" %>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :location, class: "form-label" %>
+      <%= f.text_field :location, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :body, class: "form-label" %>
+      <%= f.text_area :body, rows: 6, class: "form-control" %>
+    </div>
+
+    <% if @post.images.attached? %>
+      <h5>Current Photos</h5>
+
+      <div class="row g-3 mb-3">
+        <% @post.images.each do |image| %>
+          <div class="col-md-3">
+            <%= image_tag image, class: "img-fluid rounded", style: "width: 100%; height: 150px; object-fit: cover;" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="mb-3">
+      <%= f.label :images, "Add New Photos", class: "form-label" %>
+      <%= f.file_field :images, multiple: true, accept: "image/*", class: "form-control" %>
+    </div>
+
+    <%= f.submit "Update Post", class: "btn btn-primary" %>
+
+    <%= link_to "Cancel", post_path(@post), class: "btn btn-secondary ms-2" %>
+
+  <% end %>
+</div>

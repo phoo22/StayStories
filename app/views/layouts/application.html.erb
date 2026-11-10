@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Stay Stories" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Stay Stories">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <header class="header">
+      <nav class="container d-flex justify-content-between align-items-center py-3">
+        <%= link_to "StayStories", root_path, class: "logo" %>
+
+        <div class="d-flex align-items-center gap-4">
+          <%= link_to "Home", root_path, class: "nav-link" %>
+          <%= link_to "About", about_path, class: "nav-link" %>
+
+          <% if current_user %>
+            <%= link_to current_user.name, user_path(current_user), class: "username text-decoration-none" %>
+
+            <%= button_to "Log Out", sessions_path, method: :delete, class: "signin-btn" %>
+
+          <% else %>
+            <%= link_to "Sign Up", new_user_path, class: "signin-btn" %>
+            <%= link_to "Sign In", new_sessions_path, class: "signin-btn" %>
+          <% end %>
+        </div>
+      </nav>
+    </header>
+
+    <% flash.each do |type, message| %>
+      <div class="flash <%= type %>">
+        <%= message %>
+      </div>
+    <% end %>
+    <%= yield %>
+
+    <footer class="footer">
+      <div class="container">
+        <p>© 2026 StayStories. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

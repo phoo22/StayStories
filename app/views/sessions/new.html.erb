@@ -1,0 +1,18 @@
+<div class="signup signin">
+  <h2>Welcome Back</h2>
+  <p>Sign in to continue your StayStories journey.</p>
+
+  <%= form_with url: sessions_path do |f| %>
+    <div class="mb-3">
+      <%= f.label :email_address, "Email Address", class: "form-label" %>
+      <%= f.email_field :email_address, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :password, "Password", class: "form-label" %>
+      <%= f.password_field :password, class: "form-control", required: true %>
+    </div>
+
+    <%= f.submit "Sign In", class: "btn signup-btn" %>
+  <% end %>
+</div>

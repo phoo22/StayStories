@@ -1,0 +1,167 @@
+<div class="container mt-4">
+  <div class="card mb-4">
+    <div class="card-body">
+
+      <h1><%= @post.title %></h1>
+
+      <p class="text-muted small mb-2">
+        <i class="fa-solid fa-user"></i>
+        Posted by
+        <%= link_to @post.user.name,
+            user_path(@post.user),
+            class: "text-decoration-none" %>
+      </p>
+
+      <p class="text-muted">
+        <i class="fa-solid fa-location-dot"></i>
+        <%= @post.location %>
+      </p>
+
+      <hr>
+
+      <p><%= simple_format(@post.body) %></p>
+
+      <% if @post.images.attached? %>
+        <h4 class="mt-4">Photos</h4>
+
+        <div class="row g-3">
+          <% @post.images.each do |image| %>
+            <div class="col-md-4">
+              <%= image_tag image,
+                  class: "img-fluid rounded",
+                  style: "width: 100%; height: 250px; object-fit: cover;" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="mt-4 d-flex align-items-center gap-3">
+        <% if current_user %>
+          <% if current_user.likes.exists?(post: @post) %>
+            <%= button_to post_like_path(@post),
+                method: :delete,
+                class: "btn btn-danger" do %>
+              <i class="fa-solid fa-heart"></i> Unlike
+            <% end %>
+          <% else %>
+            <%= button_to post_like_path(@post),
+                method: :post,
+                class: "btn btn-outline-danger" do %>
+              <i class="fa-regular fa-heart"></i> Like
+            <% end %>
+          <% end %>
+
+        <% else %>
+          <%= link_to new_sessions_path,
+              class: "btn btn-outline-danger" do %>
+            <i class="fa-regular fa-heart"></i> Sign in to Like
+          <% end %>
+        <% end %>
+
+        <span class="text-muted">
+          <%= @post.likes.count %> Likes
+        </span>
+      </div>
+
+      <hr class="my-4">
+
+      <div class="mt-4">
+        <h4 class="mb-3">
+          <i class="fa-regular fa-comments"></i> Comments
+        </h4>
+
+        <% if current_user %>
+          <%= form_with model: [@post, Comment.new], local: true do |f| %>
+            <div class="mb-3">
+              <%= f.text_area :body,
+                  class: "form-control",
+                  rows: 3,
+                  placeholder: "Write your comment...",
+                  required: true %>
+            </div>
+
+            <%= f.submit "Post Comment",
+                class: "btn btn-primary" %>
+          <% end %>
+        <% else %>
+          <p class="text-muted">
+            Please
+            <%= link_to "sign in", new_sessions_path %>
+            to leave a comment.
+          </p>
+        <% end %>
+      </div>
+
+      <div class="mt-4">
+        <h5 class="mb-3">
+          All Comments (<%= @post.comments.count %>)
+        </h5>
+
+        <% if @post.comments.any? %>
+          <% @post.comments.order(created_at: :desc).each do |comment| %>
+            <div class="card mb-3">
+              <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <strong>
+                      <i class="fa-solid fa-user"></i>
+                      <%= link_to comment.user.name,
+                        user_path(comment.user),
+                        class: "text-decoration-none" %>
+                    </strong>
+
+                    <p class="text-muted small mb-2">
+                      <%= comment.created_at.strftime("%Y/%m/%d %H:%M") %>
+                    </p>
+                  </div>
+
+                  <% if current_user == comment.user %>
+                    <%= button_to "Delete",
+                      post_comment_path(@post, comment),
+                      method: :delete,
+                      data: {
+                      turbo_confirm: "Are you sure you want to delete this comment?"
+                      },
+                      class: "btn btn-sm btn-outline-danger" %>
+                  <% end %>
+                </div>
+
+                <p class="mb-0">
+                  <%= simple_format(comment.body) %>
+                </p>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-muted">
+            No comments yet. Be the first to comment!
+          </p>
+        <% end %>
+      </div>
+
+      <% if current_user == @post.user %>
+        <div class="mt-4 d-flex gap-2">
+          <%= link_to "Edit Post",
+              edit_post_path(@post),
+              class: "btn btn-primary" %>
+
+          <%= button_to "Delete Post",
+              post_path(@post),
+              method: :delete,
+              data: {
+                turbo_confirm: "Are you sure you want to delete this post?"
+              },
+              class: "btn btn-danger" %>
+        </div>
+      <% end %>
+
+      <div class="mt-4">
+        <%= link_to "Back to Posts",
+            posts_path,
+            class: "btn btn-secondary" %>
+      </div>
+
+    </div>
+  </div>
+</div>

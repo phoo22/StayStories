@@ -1,0 +1,70 @@
+<div class="container mt-4">
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body p-4">
+      <div class="d-flex flex-column flex-sm-row align-items-center gap-3 gap-sm-4 text-center text-sm-start">
+
+        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+             style="width: 90px; height: 90px; flex-shrink: 0;">
+          <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div>
+          <h2 class="mb-1"><%= @user.name %></h2>
+          <p class="text-muted mb-2">Travel Story Author</p>
+          <span class="badge bg-primary"><%= pluralize(@user.posts.count, "Story") %></span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <h3 class="mb-3">Travel Stories by <%= @user.name %></h3>
+
+  <% if @user.posts.exists? %>
+    <div class="row g-4 mt-2">
+      <% @user.posts.order(created_at: :desc).each do |post| %>
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+
+            <% if post.images.attached? %>
+              <%= image_tag post.images.first,
+                  class: "card-img-top",
+                  style: "height: 220px; object-fit: cover;" %>
+            <% end %>
+
+            <div class="card-body d-flex flex-column">
+              <h4 class="card-title"><%= post.title %></h4>
+
+              <p class="text-muted">
+                <i class="fa-solid fa-location-dot"></i>
+                <%= post.location %>
+              </p>
+
+              <p class="card-text">
+                <%= truncate(post.body, length: 100) %>
+              </p>
+
+              <div class="mt-auto">
+                <%= link_to "Read More", post_path(post), class: "btn btn-primary" %>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      <% end %>
+
+    </div>
+
+  <% else %>
+    <div class="alert alert-light border mt-3">
+      <i class="fa-solid fa-circle-info me-2"></i>
+      No travel stories yet.
+    </div>
+  <% end %>
+
+  <div class="mt-4 mb-4">
+    <%= link_to "Back to Posts", posts_path, class: "btn btn-secondary" %>
+  </div>
+
+</div>
