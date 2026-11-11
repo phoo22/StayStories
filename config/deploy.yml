@@ -7,7 +7,7 @@ image: stay_stories
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - 13.231.38.58
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -27,7 +27,9 @@ servers:
 # Where you keep your container images.
 registry:
   # Alternatives: hub.docker.com / registry.digitalocean.com / ghcr.io / ...
-  server: localhost:5555
+  server: 127.0.0.1:5555
+  username: ubuntu
+  password: <%= ENV.fetch("KAMAL_REGISTRY_PASSWORD", "unused-local-registry") %>
 
   # Needed for authenticated registries.
   # username: your-user
@@ -117,3 +119,6 @@ builder:
 #     port: 6379
 #     directories:
 #       - data:/data
+ssh:
+  user: ubuntu
+
