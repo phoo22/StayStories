@@ -24,8 +24,14 @@ test:
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
   primary:
-    <<: *default
-    database: storage/production.sqlite3
+    adapter: mysql2
+    encoding: utf8mb4
+    pool: 5
+    host: <%= ENV.fetch("DB_HOST") %>
+    port: 3306
+    database: staystories_production
+    username: admin
+    password: <%= ENV.fetch("DB_PASSWORD") %>
   cache:
     <<: *default
     database: storage/production_cache.sqlite3
