@@ -2,7 +2,7 @@
 service: stay_stories
 
 # Name of the container image (use your-user/app-name on external registries).
-image: ghcr.io/phoo22/stay_stories
+image: phoo22/stay_stories
 
 # Deploy to these servers.
 servers:
